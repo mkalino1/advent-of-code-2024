@@ -1,0 +1,39 @@
+import * as fs from "fs";
+import { zip } from "lodash";
+
+const rawData: string = fs.readFileSync("day-04/data", "utf8");
+
+const rows: string[] = rawData.split(/\r?\n/);
+const columns: string[] = zip(...rows.map((el: string) => el.split(""))).map(
+  (el) => el.join("")
+);
+
+// Generates diagonals for top right half of matrix
+// Or bottom left if otherHalf = true
+const generateHalfDiagonals = (rows: string[], otherHalf = false) => {
+  return rows.map((_, i) =>
+    rows
+      .map(
+        (_, j) => rows[j + i * Number(otherHalf)]?.[j + i * Number(!otherHalf)]
+      )
+      .filter(Boolean)
+      .join("")
+  );
+};
+
+const generateDiagonals = (rows: string[]) => {
+  const diagonals: string[] = [
+    ...generateHalfDiagonals(rows),
+    ...generateHalfDiagonals(rows, true),
+  ];
+  //Remove the duplicated main diagonal
+  diagonals.shift();
+  return diagonals;
+};
+
+const diagonalsBackslash = generateDiagonals(rows);
+const diagonalsSlash = generateDiagonals(
+  rows.map((el) => el.split("").reverse().join(""))
+);
+
+export { rows, columns, diagonalsBackslash, diagonalsSlash };
