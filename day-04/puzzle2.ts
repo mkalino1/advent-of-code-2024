@@ -7,7 +7,7 @@ const neighboursOffsets = [
   [1, 1],
 ];
 
-const haveValidNeighbours = (i: number, j: number): boolean => {
+const hasValidNeighbours = (i: number, j: number): boolean => {
   const neighbours = neighboursOffsets.map(
     ([offsetX, offsetY]) => rowsAs2DArray[i + offsetX]?.[j + offsetY]
   );
@@ -31,7 +31,7 @@ let sum = 0;
 rowsAs2DArray.forEach((_, i) =>
   rowsAs2DArray.forEach((_, j) => {
     if (rowsAs2DArray[i][j] === "A") {
-      sum += Number(haveValidNeighbours(i, j));
+      sum += Number(hasValidNeighbours(i, j));
     }
   })
 );
