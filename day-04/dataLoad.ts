@@ -4,9 +4,8 @@ import { zip } from "lodash";
 const rawData: string = fs.readFileSync("day-04/data", "utf8");
 
 const rows: string[] = rawData.split(/\r?\n/);
-const columns: string[] = zip(...rows.map((el: string) => el.split(""))).map(
-  (el) => el.join("")
-);
+const rowsAs2DArray: string[][] = rows.map((row: string) => row.split(""));
+const columns: string[] = zip(...rowsAs2DArray).map((el) => el.join(""));
 
 // Generates diagonals for top right half of matrix
 // Or bottom left if otherHalf = true
@@ -36,4 +35,4 @@ const diagonalsSlash = generateDiagonals(
   rows.map((el) => el.split("").reverse().join(""))
 );
 
-export { rows, columns, diagonalsBackslash, diagonalsSlash };
+export { rows, rowsAs2DArray, columns, diagonalsBackslash, diagonalsSlash };
