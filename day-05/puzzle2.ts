@@ -3,7 +3,7 @@ import { rules, updates } from "./dataLoad";
 
 const rulesMap = generateRulesMap(rules);
 
-const fixOnePageIfNeeded = (update: number[]): boolean => {
+const reorderOnePageInUpdateIfNeeded = (update: number[]): boolean => {
   let pageToMoveAfterIdx = -1;
 
   // Find index of first page that have wrong pages on the right
@@ -21,13 +21,12 @@ const fixOnePageIfNeeded = (update: number[]): boolean => {
       return true;
     }
   );
-
   if (pageToBeMovedIdx === -1) return false;
-  movePage(update, pageToBeMovedIdx, pageToMoveAfterIdx);
+  movePageInUpdate(update, pageToBeMovedIdx, pageToMoveAfterIdx);
   return true;
 };
 
-const movePage = (update: number[], pageToBeMovedIdx, pageToMoveAfterIdx) => {
+const movePageInUpdate = (update: number[], pageToBeMovedIdx, pageToMoveAfterIdx) => {
   const movedPage: number = update.splice(pageToBeMovedIdx, 1)[0];
   update.splice(pageToMoveAfterIdx, 0, movedPage);
 };
@@ -35,7 +34,7 @@ const movePage = (update: number[], pageToBeMovedIdx, pageToMoveAfterIdx) => {
 const sum = updates
   .filter((update) => isUpdateInvalid(update, rulesMap))
   .map((update) => {
-    while (fixOnePageIfNeeded(update)) {}
+    while (reorderOnePageInUpdateIfNeeded(update)) {}
     return update;
   })
   .reduce((sum, update) => sum + update[Math.floor(update.length / 2)], 0);
