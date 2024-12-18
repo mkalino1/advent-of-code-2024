@@ -28,10 +28,14 @@ const hasValidNeighbours = (i: number, j: number): boolean => {
 
 let sum = 0;
 
-rowsAs2DArray.forEach((_, i) =>
-  rowsAs2DArray.forEach((_, j) => {
-    if (rowsAs2DArray[i][j] === "A") {
-      sum += Number(hasValidNeighbours(i, j));
+const rowsWithoutEdges = rowsAs2DArray
+  .slice(1, -1)
+  .map((row) => row.slice(1, -1));
+
+rowsWithoutEdges.forEach((_, i) =>
+  rowsWithoutEdges.forEach((_, j) => {
+    if (rowsAs2DArray[i + 1][j + 1] === "A") {
+      sum += Number(hasValidNeighbours(i + 1, j + 1));
     }
   })
 );
