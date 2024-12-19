@@ -3,9 +3,8 @@ import columns from "./dataLoad";
 const firstColumn = columns[0];
 const secondColumn = columns[1];
 
-let sum = 0;
-for (let i = 0; i < firstColumn.length; i++) {
-  const occurrences = secondColumn.filter((el) => el === firstColumn[i]).length;
-  sum += firstColumn[i] * occurrences;
-}
+const sum = firstColumn
+  .map((_, i) => secondColumn.filter((el) => el === firstColumn[i]).length)
+  .reduce((sum, occurances, i) => sum + firstColumn[i] * occurances);
+
 console.log(sum);
