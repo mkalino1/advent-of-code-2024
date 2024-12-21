@@ -1,5 +1,8 @@
 import * as fs from "fs";
-import { zip } from "lodash";
+
+const zip = (...rows: string[][]) => {
+  return rows.map((_, j) => rows[0].map((_, i) => rows[i][j]));
+};
 
 const rawData: string = fs.readFileSync("day-04/data", "utf8");
 

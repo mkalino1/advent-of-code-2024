@@ -1,5 +1,8 @@
 import * as fs from "fs";
-import { zip } from "lodash";
+
+const zip = (...pairs: number[][]) => {
+  return [[], []].map((_, i) => pairs.map((pair) => pair[i]));
+};
 
 const rawData: string = fs.readFileSync("day-01/data", "utf8");
 const pairs: number[][] = rawData
