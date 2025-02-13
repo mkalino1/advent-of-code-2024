@@ -25,33 +25,27 @@ inputNumbers.map((number, index) => {
 })
 
 function findFreePlaceIndexForSector(sectorToMove: Sector): number {
-  let freeIndex = 1
-  while (freeIndex < sectors.length && freeIndex < sectorToMove.index) {
-    const isFreePlace = sectors[freeIndex].blocks.filter(block => block === '_').length >= sectorToMove.blocks.length
-    if (isFreePlace) {
-      return freeIndex
-    }
-    freeIndex += 1
-  }
-  return -1
+  return sectors
+    .slice(0, sectorToMove.index)
+    .findIndex(sector => 
+      sector.blocks.filter(block => block === '_').length >= sectorToMove.blocks.length
+    )
 }
 
 sectors
   .toReversed()
   .filter(sector => sector.isInitiallyUsed)
   .forEach(currentSector => {
-    const freePlaceIdx = findFreePlaceIndexForSector(currentSector)
-    if (freePlaceIdx === -1) {
+    const freePlaceIndex = findFreePlaceIndexForSector(currentSector)
+    if (freePlaceIndex === -1) {
       return
     }
     // Move blocks from current sector to sector with enough free space
-    const sectorToMoveTo = sectors[freePlaceIdx]
-    const beforeLength = sectorToMoveTo.blocks.length
-    sectorToMoveTo.blocks = sectorToMoveTo.blocks.filter(block => block !== '_').concat(currentSector.blocks)
-    // Fill the rest with blanks if needed
-    if (sectorToMoveTo.blocks.length < beforeLength) {
-      sectorToMoveTo.blocks = sectorToMoveTo.blocks.concat(Array(beforeLength - sectorToMoveTo.blocks.length).fill('_'))
-    }
+    sectors[freePlaceIndex].blocks.splice(
+      sectors[freePlaceIndex].blocks.indexOf('_'),
+      currentSector.blocks.length,
+      ...currentSector.blocks
+    )
     currentSector.blocks = Array(currentSector.blocks.length).fill('_')
   })
 
