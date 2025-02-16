@@ -23,19 +23,19 @@ function generateValidNeighbours(point: Point): Point[] {
     .filter(neighbour => neighbour.height != -1 && neighbour.height == point.height + 1)
 }
 
-function lookForPeaks(currentPoint: Point, availablePeaks: Set<string> = new Set()) {
+function lookForPaths(currentPoint: Point, availablePaths: { counter: number } = { counter: 0 }) {
   if (currentPoint.height == 9) {
-    availablePeaks.add(`${currentPoint.x}-${currentPoint.y}`)
+    availablePaths.counter += 1
   }
   generateValidNeighbours(currentPoint)
     .forEach(neighbour =>
-      lookForPeaks(neighbour, availablePeaks)
+      lookForPaths(neighbour, availablePaths)
     )
-  return availablePeaks.size
+  return availablePaths.counter
 }
 
 const totalScore = trailheads
-  .map(trailhead => lookForPeaks(trailhead))
+  .map(trailhead => lookForPaths(trailhead))
   .reduce((sum, score) => sum + score)
 
 console.log(totalScore)
