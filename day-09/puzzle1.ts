@@ -49,8 +49,7 @@ while (leftFreeIdx < rightUsedIdx) {
 
 const checksum = sectors
   .slice(0, rightUsedIdx + 1)
-  .map(sector => sector.blocks)
-  .flat()
+  .flatMap(sector => sector.blocks)
   .map((el, i) => Number(el) * i)
   .reduce((sum, el) => sum + el)
 

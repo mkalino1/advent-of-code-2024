@@ -50,8 +50,7 @@ sectors
   })
 
 const checksum = sectors
-  .map(sector => sector.blocks)
-  .flat()
+  .flatMap(sector => sector.blocks)
   .map((char, index) => ({ char, index }))
   .filter(el => el.char !== '_')
   .reduce((sum, el) => sum + (Number(el.char) * el.index), 0)
