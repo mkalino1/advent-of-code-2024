@@ -6,14 +6,15 @@ type Point = {
   height: number,
 }
 
+const neighboursVectors = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+
 const trailheads: Point[] = heights
-  .map((row, y) => row
+  .flatMap((row, y) => row
     .map((height, x) => ({ x, y, height }))
     .filter(point => point.height == 0)
-  ).flat()
+  )
 
 function generateValidNeighbours(point: Point): Point[] {
-  const neighboursVectors = [[0, 1], [1, 0], [0, -1], [-1, 0]]
   return neighboursVectors
     .map(vector => ({
       x: vector[0] + point.x,
@@ -23,19 +24,17 @@ function generateValidNeighbours(point: Point): Point[] {
     .filter(neighbour => neighbour.height != -1 && neighbour.height == point.height + 1)
 }
 
-function lookForPaths(currentPoint: Point, availablePaths: { counter: number } = { counter: 0 }) {
+function lookForPaths(currentPoint: Point) {
   if (currentPoint.height == 9) {
-    availablePaths.counter += 1
+    return 1
   }
-  generateValidNeighbours(currentPoint)
-    .forEach(neighbour =>
-      lookForPaths(neighbour, availablePaths)
-    )
-  return availablePaths.counter
+  return generateValidNeighbours(currentPoint)
+    .map(lookForPaths)
+    .reduce((sum, paths) => sum + paths, 0)
 }
 
 const totalScore = trailheads
-  .map(trailhead => lookForPaths(trailhead))
+  .map(lookForPaths)
   .reduce((sum, score) => sum + score)
 
 console.log(totalScore)

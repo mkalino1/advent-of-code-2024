@@ -6,14 +6,15 @@ type Point = {
   height: number,
 }
 
+const neighboursVectors = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+
 const trailheads: Point[] = heights
-  .map((row, y) => row
+  .flatMap((row, y) => row
     .map((height, x) => ({ x, y, height }))
     .filter(point => point.height == 0)
-  ).flat()
+  )
 
 function generateValidNeighbours(point: Point): Point[] {
-  const neighboursVectors = [[0, 1], [1, 0], [0, -1], [-1, 0]]
   return neighboursVectors
     .map(vector => ({
       x: vector[0] + point.x,
