@@ -1,11 +1,12 @@
-import { inputNumbers } from "./dataLoad";
+import { inputNumbers } from "./dataLoad"
+
+const totalIterations = 25
 
 let stones = inputNumbers
 
 function transformStone(stone: number): number | number[] {
-  if (stone == 0) {
-    return 1
-  }
+  if (stone == 0) return 1
+
   const engravementLength = String(stone).length
   if (engravementLength % 2 == 0) {
     return [
@@ -16,7 +17,7 @@ function transformStone(stone: number): number | number[] {
   return stone * 2024
 }
 
-Array.from({ length: 25 }).forEach(_ => {
+Array.from({ length: totalIterations }).forEach(_ => {
   stones = stones.flatMap(transformStone)
 })
 
